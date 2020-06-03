@@ -1,0 +1,6 @@
+
+```
+type server struct {
+    
+}
+```

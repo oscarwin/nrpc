@@ -1,2 +1,2 @@
 # nrpc
-a rpc framework
+a high-performance rpc framework
