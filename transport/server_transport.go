@@ -8,7 +8,7 @@ import (
 
 type ServerTransport interface {
 	Listen() error
-	Accept()
+	Accept() (Transport, error)
 	Close()
 }
 
@@ -42,7 +42,7 @@ func (t *serverTransport) Listen() error {
 	return nil
 }
 
-func (t *serverTransport) Accept() (NTransport, error) {
+func (t *serverTransport) Accept() (Transport, error) {
 	t.lo.RLock()
 	listener := t.listener
 	t.lo.RUnlock()
@@ -55,10 +55,7 @@ func (t *serverTransport) Accept() (NTransport, error) {
 		return nil, err
 	}
 
-	return &NSocket{
-		conn:    conn,
-		timeout: t.options.Timeout,
-	}, nil
+	return NewNSocketWithConnTimeout(conn, t.options.Timeout), nil
 }
 
 func (t *serverTransport) IsListening() bool {
